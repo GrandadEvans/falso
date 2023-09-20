@@ -18,11 +18,12 @@ function generator(size = 8, chars = numericAlphaChars) {
 type RandomSequenceOptions = {
   size?: number;
   chars?: string;
+  charType?: string;
 } & FakeOptions;
 
 type RandomSequenceOptions2 = {
   size?: number;
-  charType?: 'numeric' | 'alpha' | 'alphaNumeric' | 'special';
+  charType?: 'numeric' | 'alpha' | 'alphaNumeric' | 'alphaNumWithSpecial' | 'special';
 } & FakeOptions;
 
 /**
@@ -73,6 +74,15 @@ export function randSequence<
         );
       case 'alphaNumeric':
         return fake(() => generator(options?.size, numericAlphaChars), options);
+      case 'alphaNumWithSpecial':
+        return fake(
+            () =>
+                generator(
+                    options?.size,
+                    `${alphaChars}${alphaChars.toUpperCase()}${specialChars}`
+                ),
+            options
+        );
       case 'numeric':
         return fake(() => generator(options?.size, numericChars), options);
       case 'special':
